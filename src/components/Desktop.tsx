@@ -3,8 +3,10 @@ import AppIcon from "./AppIcon";
 import Window from "./Window";
 import About from "../apps/About";  
 import ProjectsFolder from "../apps/ProjectsFolder";
+import Contact from "../apps/Contact";
+import Skills from "../apps/Skills";
 
-type View = "desktop" | "projects";
+type View = "desktop" | "projects" | "skills";
 
 const Desktop = () => {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
@@ -13,6 +15,11 @@ const Desktop = () => {
   if(view ==="projects"){
     return(
       <ProjectsFolder onBack={() => setView("desktop")} />
+    )
+  }
+  if(view === "skills"){
+    return(
+      <Skills onBack={() => setView("desktop")} />
     )
   }
   return(
@@ -25,8 +32,11 @@ const Desktop = () => {
         <div onClick={() => setView("projects")}>
         <AppIcon title="Projects" icon="💻" />
         </div>
-        
-        <AppIcon title="Skills" icon="🧠" />
+
+        <div onClick={() => setView("skills")}>
+          <AppIcon title="Skills" icon="🧠" />
+        </div>
+
         <AppIcon title="Contact" icon="✉️" />
       </main>
 
