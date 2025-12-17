@@ -3,7 +3,6 @@ import AppIcon from "./AppIcon";
 import Window from "./Window";
 import About from "../apps/About";  
 import ProjectsFolder from "../apps/ProjectsFolder";
-import Contact from "../apps/Contact";
 import Skills from "../apps/Skills";
 
 type View = "desktop" | "projects" | "skills";
