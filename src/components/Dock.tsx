@@ -17,7 +17,6 @@ const apps: { name: AppName; icon: string }[] = [
 
 const Dock = ({
   openApp,
-  minimizeApp,
   activeApps,
   minimizedApps,
   currentView,
