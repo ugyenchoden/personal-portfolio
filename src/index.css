@@ -93,3 +93,36 @@ body {
   padding: 20px;
   color: #111827;
 }
+
+.folder-view {
+  height: 100vh;
+  padding: 32px;
+  background: #f9fafb;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 140px);
+  gap: 24px;
+}
+
+.file {
+  text-align: center;
+  cursor: pointer;
+}
+
+.file-icon {
+  font-size: 48px;
+}
+
+.file small {
+  color: #6b7280;
+}
