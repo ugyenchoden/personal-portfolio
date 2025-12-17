@@ -81,6 +81,11 @@ body {
   background: #22c55e;
 }
 
+.control.minimize,
+.control.maximize {
+  cursor: pointer;
+}
+
 .window-title {
   position: absolute;
   left: 50%;
@@ -94,11 +99,65 @@ body {
   color: #111827;
 }
 
-.folder-view {
-  height: 100vh;
-  padding: 32px;
-  background: #f9fafb;
+/* Dock styles */
+.dock {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 24px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* visible outline */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
 }
+
+.dock-icon {
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+  position: relative;
+}
+
+.dock-icon:hover {
+  transform: scale(1.2);
+}
+
+.dock-icon.active {
+  transform: scale(1.15);
+}
+
+.dock-icon.open::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e5e7eb; /* light indicator for running app */
+}
+
+.dock-icon.minimized::after {
+  background: #9ca3af; /* slightly dimmer for minimized */
+}
+
+
+.dock-icon .icon {
+  font-size: 32px;
+}
+
+.dock-icon p {
+  font-size: 12px;
+  margin: 0;
+}
+
 
 .back-button {
   background: none;
@@ -106,6 +165,7 @@ body {
   font-size: 16px;
   cursor: pointer;
   margin-bottom: 20px;
+  color: #374151;
 }
 
 .folder-grid {
@@ -126,3 +186,23 @@ body {
 .file small {
   color: #6b7280;
 }
+
+.app-content h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.app-content p,
+.app-content li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.window-maximized {
+  width: 100vw !important;
+  height: 100vh !important;
+  top: 0;
+  left: 0;
+}
+

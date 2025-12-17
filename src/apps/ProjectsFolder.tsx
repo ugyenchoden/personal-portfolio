@@ -9,13 +9,9 @@ const projects: Project[] = [
   { name: "Rails API", tech: "Rails 8, PostgreSQL" },
 ];
 
-const ProjectsFolder = ({ onBack }: { onBack: () => void }) => {
+const ProjectsFolder = () => {
   return (
-    <div className="folder-view">
-      <button className="back-button" onClick={onBack}>
-        ← Back
-      </button>
-
+    <div className="app-content">
       <h2>Projects</h2>
 
       <div className="folder-grid">

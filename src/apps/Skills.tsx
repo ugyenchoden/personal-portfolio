@@ -9,14 +9,9 @@ const skills: Skill[] = [
   { name: "Node.js", level: "Intermediate" },
 ];
 
-const Skills = ({ onBack }: { onBack: () => void }) => {
+const Skills = () => {
   return (
-
-    <div className="folder-view">
-      <button className="back-button" onClick={onBack}>
-        ← Back
-      </button>
-
+    <div className="app-content">
       <h2>My Skills</h2>
       <ul>
         {skills.map((skill) => (
