@@ -1,3 +1,6 @@
+/* =====================
+   Global Reset
+===================== */
 * {
   box-sizing: border-box;
 }
@@ -5,8 +8,12 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  overflow: hidden;
 }
 
+/* =====================
+   Desktop
+===================== */
 .desktop {
   height: 100vh;
   background: linear-gradient(135deg, #0f172a, #020617);
@@ -16,6 +23,9 @@ body {
   padding: 40px;
 }
 
+/* =====================
+   Desktop Icons
+===================== */
 .app-icon {
   text-align: center;
   color: white;
@@ -31,23 +41,41 @@ body {
   font-size: 14px;
 }
 
+/* =====================
+   Window Overlay
+===================== */
 .window-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
+.window-overlay.focused {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.window-overlay .window {
+  pointer-events: auto;
+}
+
+/* =====================
+   Window
+===================== */
 .window {
-  width: 600px;
+  width: 640px;
   background: #f9fafb;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
   overflow: hidden;
 }
 
+/* =====================
+   Window Header
+===================== */
 .window-header {
   display: flex;
   align-items: center;
@@ -56,6 +84,7 @@ body {
   position: relative;
 }
 
+/* macOS Controls */
 .window-controls {
   display: flex;
   gap: 8px;
@@ -65,7 +94,6 @@ body {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  display: inline-block;
 }
 
 .control.close {
@@ -75,14 +103,11 @@ body {
 
 .control.minimize {
   background: #f59e0b;
+  cursor: pointer;
 }
 
 .control.maximize {
   background: #22c55e;
-}
-
-.control.minimize,
-.control.maximize {
   cursor: pointer;
 }
 
@@ -94,71 +119,109 @@ body {
   color: #374151;
 }
 
+/* =====================
+   Window Content
+===================== */
 .window-content {
   padding: 20px;
   color: #111827;
 }
 
-/* Dock styles */
+/* Maximized */
+.window-maximized {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+/* =====================
+   Dock (macOS-style)
+===================== */
 .dock {
   position: fixed;
-  bottom: 20px;
+  bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
+
   display: flex;
-  gap: 24px;
-  padding: 8px 16px;
-  border-radius: 24px;
+  align-items: center;
+  gap: 16px;
+
+  height: 64px;
+  padding: 8px 18px;
+  border-radius: 20px;
+
   backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3); /* visible outline */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+
   z-index: 1000;
 }
 
+/* =====================
+   Dock Icons
+===================== */
 .dock-icon {
-  text-align: center;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.2s;
   position: relative;
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: transform 0.15s ease;
 }
 
-.dock-icon:hover {
-  transform: scale(1.2);
+/* Image icons */
+.dock-icon img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
 
-.dock-icon.active {
-  transform: scale(1.15);
-}
-
-.dock-icon.open::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -4px;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #e5e7eb; /* light indicator for running app */
-}
-
-.dock-icon.minimized::after {
-  background: #9ca3af; /* slightly dimmer for minimized */
-}
-
-
+/* Emoji / Font icons */
 .dock-icon .icon {
   font-size: 32px;
 }
 
-.dock-icon p {
-  font-size: 12px;
-  margin: 0;
+/* Hover & active scale */
+.dock-icon:hover {
+  transform: scale(1.5);
 }
 
+.dock-icon.active {
+  transform: scale(1.1);
+}
 
+/* Running app indicator */
+.dock-icon.open::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e5e7eb;
+}
+
+/* Minimized app indicator */
+.dock-icon.minimized::after {
+  background: #9ca3af;
+}
+
+/* Hide labels */
+.dock-icon p {
+  display: none;
+}
+
+/* =====================
+   Back Button
+===================== */
 .back-button {
   background: none;
   border: none;
@@ -168,6 +231,9 @@ body {
   color: #374151;
 }
 
+/* =====================
+   Folder / File Grid
+===================== */
 .folder-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 140px);
@@ -187,6 +253,9 @@ body {
   color: #6b7280;
 }
 
+/* =====================
+   App Content
+===================== */
 .app-content h2 {
   margin-top: 0;
   margin-bottom: 12px;
@@ -198,11 +267,3 @@ body {
   font-size: 14px;
   margin-bottom: 6px;
 }
-
-.window-maximized {
-  width: 100vw !important;
-  height: 100vh !important;
-  top: 0;
-  left: 0;
-}
-

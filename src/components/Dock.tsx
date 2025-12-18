@@ -1,3 +1,8 @@
+import aboutIcon from "../assets/finder.png";
+import projectsIcon from "../assets/safari.png";
+import skillsIcon from "../assets/terminal.png";
+import contactIcon from "../assets/contact.png";
+
 type AppName = "About" | "Projects" | "Skills" | "Contact";
 
 type DockProps = {
@@ -9,10 +14,10 @@ type DockProps = {
 };
 
 const apps: { name: AppName; icon: string }[] = [
-  { name: "About", icon: "📁" },
-  { name: "Projects", icon: "💼" },
-  { name: "Skills", icon: "🧠" },
-  { name: "Contact", icon: "✉️" },
+  { name: "About", icon: aboutIcon },
+  { name: "Projects", icon: projectsIcon },
+  { name: "Skills", icon: skillsIcon },
+  { name: "Contact", icon: contactIcon },
 ];
 
 const Dock = ({
@@ -56,7 +61,9 @@ const Dock = ({
             } ${isMinimized ? "minimized" : ""}`}
             onClick={() => handleClick(app.name)}
           >
-            <span className="icon">{app.icon}</span>
+            <span className="icon">
+              <img src={app.icon} alt={app.name} />
+            </span>
             <p>{app.name}</p>
           </div>
         );

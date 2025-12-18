@@ -11,68 +11,47 @@ type AppName = "About" | "Projects" | "Skills" | "Contact";
 const Desktop = () => {
   const [openApps, setOpenApps] = useState<AppName[]>([]);
   const [minimizedApps, setMinimizedApps] = useState<AppName[]>([]);
-  const [currentView, setCurrentView] = useState<AppName | null>(null);
+  const [maximizedApps, setMaximizedApps] = useState<AppName[]>([]);
+  const [focusedApp, setFocusedApp] = useState<AppName | null>(null);
 
-  /**
-   * Open (or focus) an app.
-   * - Adds to open apps if not present
-   * - Removes from minimized list if present
-   * - Sets as the current foreground view
-   */
   const openApp = (appName: AppName) => {
-    setOpenApps((prevOpen) =>
-      prevOpen.includes(appName) ? prevOpen : [...prevOpen, appName]
-    );
-    setMinimizedApps((prevMinimized) =>
-      prevMinimized.filter((app) => app !== appName)
-    );
-    setCurrentView(appName);
+    setOpenApps((prev) => (prev.includes(appName) ? prev : [...prev, appName]));
+    setMinimizedApps((prev) => prev.filter((a) => a !== appName));
+    setFocusedApp(appName);
   };
 
-  /**
-   * Close an app completely.
-   * - Removes from open and minimized lists
-   * - Updates current view to the last opened remaining app, if any
-   */
   const closeApp = (appName: AppName) => {
-    setOpenApps((prevOpen) => {
-      const nextOpen = prevOpen.filter((app) => app !== appName);
-
-      setMinimizedApps((prevMinimized) =>
-        prevMinimized.filter((app) => app !== appName)
-      );
-
-      if (currentView === appName) {
-        setCurrentView(nextOpen[nextOpen.length - 1] ?? null);
-      }
-
-      return nextOpen;
-    });
-  };
-
-  /**
-   * Minimize an app.
-   * - Adds to minimized list
-   * - Clears currentView if that app was in front
-   */
-  const minimizeApp = (appName: AppName) => {
-    setMinimizedApps((prevMinimized) =>
-      prevMinimized.includes(appName)
-        ? prevMinimized
-        : [...prevMinimized, appName]
-    );
-    if (currentView === appName) {
-      setCurrentView(null);
+    setOpenApps((prev) => prev.filter((a) => a !== appName));
+    setMinimizedApps((prev) => prev.filter((a) => a !== appName));
+    setMaximizedApps((prev) => prev.filter((a) => a !== appName));
+    if (focusedApp === appName) {
+      const remaining = openApps.filter((a) => a !== appName);
+      setFocusedApp(remaining[remaining.length - 1] ?? null);
     }
   };
 
-  /**
-   * Toggle a simple "maximized" CSS class on the window.
-   */
-  const maximizeApp = () => {
-    const element = document.getElementById("window-active");
-    if (!element) return;
-    element.classList.toggle("window-maximized");
+  const minimizeApp = (appName: AppName) => {
+    setMinimizedApps((prev) =>
+      prev.includes(appName) ? prev : [...prev, appName]
+    );
+    if (focusedApp === appName) {
+      const visible = openApps.filter(
+        (a) => a !== appName && !minimizedApps.includes(a)
+      );
+      setFocusedApp(visible[visible.length - 1] ?? null);
+    }
+  };
+
+  const toggleMaximize = (appName: AppName) => {
+    setMaximizedApps((prev) =>
+      prev.includes(appName)
+        ? prev.filter((a) => a !== appName)
+        : [...prev, appName]
+    );
+  };
+
+  const focusApp = (appName: AppName) => {
+    setFocusedApp(appName);
   };
 
   const renderApp = (appName: AppName) => {
@@ -94,24 +73,37 @@ const Desktop = () => {
     <>
       <main className="desktop" />
 
-      {currentView && !minimizedApps.includes(currentView) && (
-        <Window
-          title={`${currentView}.app`}
-          windowId="window-active"
-          onClose={() => closeApp(currentView)}
-          onMinimize={() => minimizeApp(currentView)}
-          onMaximize={maximizeApp}
-        >
-          {renderApp(currentView)}
-        </Window>
-      )}
+      {openApps.map((appName, index) => {
+        const isMinimized = minimizedApps.includes(appName);
+        const isMaximized = maximizedApps.includes(appName);
+        const isFocused = focusedApp === appName;
+
+        if (isMinimized) return null;
+
+        return (
+          <Window
+            key={appName}
+            title={`${appName}`}
+            windowId={`window-${appName}`}
+            isMaximized={isMaximized}
+            isFocused={isFocused}
+            zIndex={isFocused ? 600 : 500 + index}
+            onClose={() => closeApp(appName)}
+            onMinimize={() => minimizeApp(appName)}
+            onMaximize={() => toggleMaximize(appName)}
+            onFocus={() => focusApp(appName)}
+          >
+            {renderApp(appName)}
+          </Window>
+        );
+      })}
 
       <Dock
         openApp={openApp}
         minimizeApp={minimizeApp}
         activeApps={openApps}
         minimizedApps={minimizedApps}
-        currentView={currentView}
+        currentView={focusedApp}
       />
     </>
   );
